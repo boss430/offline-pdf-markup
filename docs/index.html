@@ -31,6 +31,7 @@
 
 <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css" type="text/css">
 <script language="JavaScript" src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>
 
 let viewer, markup;
@@ -83,6 +84,36 @@ function addStamp() {
         markup.loadMarkups(_markupdata, 'LogoLayer')
 }
 
+function saveSvg(name){
+  if(!name) return "name is require!!"
+  markup = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+  var svg = markup.generateData()
+  $.post('http://localhost:3333/mongo',
+    {
+      name: name,
+      svg: svg
+    }).done((_data)=>{
+      console.log("Save done!!")
+    }).fail((_data)=>{
+      console.log("Save fail!!")
+    })
+}
+
+function loadSvg(name){
+  if(!name)return "name is require!!"
+  $.get('http://localhost:3333/mongo',
+    {
+      name: name
+    },
+    (data)=>{
+      markup = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
+      markup.enterEditMode(); 
+      markup.leaveEditMode();
+      markup.loadMarkups(data.svg, 'LogoLayer')
+    }).fail((err)=>{
+      console.log("fail")
+    })
+}
 
 if ('xserviceWorker' in navigator)
   navigator.serviceWorker.register('offline-worker.js');
