@@ -14,7 +14,7 @@ app.use("/mongo", require("./mongo"));
 app.set('port', 3333);
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://127.0.0.1:27017/mongoose_dev", { useNewUrlParser: true, useUnifiedTopology: true, }).then(
+mongoose.connect("mongodb://127.0.0.1:27017/dev", { useNewUrlParser: true, useUnifiedTopology: true, }).then(
     () => {
         console.log("[success] connected to the database ");
     },

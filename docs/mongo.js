@@ -8,11 +8,11 @@ router.post('/', function(req, res, _next) {
         name: req.body.name,
         svg: req.body.svg
     }
-    new Model(payload).save((err, _data)=>{
+    new Model(payload).save((err, data)=>{
         if(err){
             res.sendStatus(500);
         }else{
-            res.sendStatus(200);
+            res.status(200).send(data);
         }
     });
 });
