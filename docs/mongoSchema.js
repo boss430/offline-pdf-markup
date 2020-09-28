@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const modelSchema = mongoose.Schema(
     {
         name: {
-            type: String
+            type: String,
+            require: true
         },
         svg: {
-            type: String
+            type: String,
+            require: true
         }
     },
     {
